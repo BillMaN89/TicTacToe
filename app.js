@@ -23,7 +23,7 @@ function gameBoard(){
 
     function placeMarker(row, col, marker) {
         if (board[row][col].getValue() !== null){
-            console.log("Cell already taken");
+            console.log("Cell already taken \n Please choose another one");
             return false;
         }
         return board[row][col].setValue(marker);
@@ -36,7 +36,7 @@ function gameBoard(){
 function Cell(){
     let value = null;
     
-    const getValue = () => value === null ? " " : value;
+    const getValue = () => value;
 
     const setValue = (newValue) => {
         if (value === null){
