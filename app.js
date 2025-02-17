@@ -59,7 +59,7 @@ function GameController(PlayerOneName, PlayerTwoName){
     const PlayerOne = CreatePlayer(PlayerOneName, "X");
     const PlayerTwo = CreatePlayer(PlayerTwoName, "O");
 
-    const board = Gameboard();
+    const boardFactory = Gameboard();
 
     let activePlayer = PlayerOne;
 
@@ -70,14 +70,14 @@ function GameController(PlayerOneName, PlayerTwoName){
     const getActivePlayer = () => activePlayer;
 
     const printNewRound = () =>{
-        board.printBoard();
+        boardFactory.printBoard();
         console.log(`${getActivePlayer().name} 's turn`);
     }
 
     const playRound = (row, col) => {
         //get active player's marker and place it on the board
         const marker = getActivePlayer().marker;
-        const success = board.placeMarker(row, col, marker);
+        const success = boardFactory.placeMarker(row, col, marker);
 
         if (!success){
             return;
@@ -86,7 +86,7 @@ function GameController(PlayerOneName, PlayerTwoName){
         console.log(`${getActivePlayer().name} placed their marker at (${row}, ${col})`);
 
         //winner validation
-        if (CheckWinner()){
+        if (CheckWinner(boardFactory.getBoard())){
             console.log(`${getActivePlayer().name} wins the game!`);
             return;
         }
@@ -99,6 +99,30 @@ function GameController(PlayerOneName, PlayerTwoName){
     printNewRound();
     
     return {playRound, getActivePlayer};
+}
+
+function CheckWinner(board){
+
+    const winConditions = [
+        //horizontal
+        [board[0][0], board[0][1], board[0][2]],
+        [board[1][0], board[1][1], board[1][2]],
+        [board[2][0], board[2][1], board[2][2]],
+        //vertical
+        [board[0][0], board[1][0], board[2][0]],
+        [board[0][1], board[1][1], board[2][1]],
+        [board[0][2], board[1][2], board[2][2]],
+        //diagonal
+        [board[0][0], board[1][1], board[2][2]],
+        [board[0][2], board[1][1], board[2][0]]
+    ];
+
+    if (winConditions.some(line => line.every(cell => cell.getValue() === "X")) ||
+        winConditions.some(line => line.every(cell => cell.getValue() === "O"))){
+        //console.log(`We have a winner! \n ${game.getActivePlayer().name} wins!`);
+        return true;
+    }
+    return false;
 }
 
 const game = GameController("Alice", "Bill");
