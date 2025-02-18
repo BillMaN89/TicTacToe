@@ -90,9 +90,17 @@ function GameController(PlayerOneName, PlayerTwoName){
             console.log(`${getActivePlayer().name} wins the game!`);
             return;
         }
+        
+        //tie check
+        if (boardFactory.getBoard().flat().every(cell => cell.getValue() !== null)) { 
+            console.log(`We have a tie!`);
+            return;
+        }
 
+        //continue game
         SwitchPlayerTurn();
         printNewRound();
+        
     };
 
     //Initial Round message
@@ -124,5 +132,7 @@ function CheckWinner(board){
     }
     return false;
 }
+
+
 
 const game = GameController("Alice", "Bill");
