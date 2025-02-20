@@ -22,3 +22,45 @@ p{
     margin-top: 10px;
     color: whitesmoke;
 }
+
+.board{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+}
+
+.cell{
+    width: 100px;
+    height: 100px;
+    font-size: 2rem;
+    text-align: center;
+    background-color: #fff;
+    border: 2px solid #000;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Διάστημα μεταξύ των στοιχείων */
+}
+
+#startGame,#restartGame {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #fff;
+    border: 2px solid #000;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#restartGame:hover,#startGame:hover {
+    background-color: rgb(200, 100, 50);
+    color: white;
+}

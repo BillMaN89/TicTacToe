@@ -144,22 +144,38 @@ function ScreenController(){
     let game;
     
     function UpdateScreen(){
-        if (!game){{
-            return;
-        }}
+        if (!game){return};
+        let gameOver = false;
+
         //clear board
         boardDiv.textContent = "";
+        messageDiv.textContent = "";
 
         const screenBoard = game.getBoard();
         console.log("Board data: ", screenBoard);
 
         const activePlayer = game.getActivePlayer();
+
         //player's turn display
-        playerDiv.textContent = `${activePlayer.name}'s turn...`;
+        if (gameOver){
+            messageDiv.textContent = "";
+        } else {
+            playerDiv.textContent = `${activePlayer.name}'s turn...`;
+        }
+
+        if (CheckWinner(screenBoard)){
+            messageDiv.textContent = `🎉 ${activePlayer.name} wins!`;
+            gameOver = true;
+        }
+
+        if (screenBoard.flat().every(cell => cell.getValue() !== null)){
+            messageDiv.textContent = "🤝 It's a tie! Would you like to play another game?";
+            gameOver = true;
+        }
 
 
         //board cells creation
-        screenBoard.forEach((row, rowIndex => {
+        screenBoard.forEach((row, rowIndex) => {
             row.forEach((cell, colIndex) => {
                 const cellButton = document.createElement("button");
                 cellButton.classList.add("cell");//for styling
@@ -170,13 +186,18 @@ function ScreenController(){
                 cellButton.dataset.col = colIndex;
 
                 //click event listener
-                cellButton.addEventListener("click", () => {
-                    game.playRound(rowIndex, colIndex);
-                    UpdateScreen();
-                });
+                if (!gameOver){
+                    cellButton.addEventListener("click", () => {
+                        game.playRound(rowIndex, colIndex);
+                        UpdateScreen();
+                    });
+                } else {
+                    cellButton.disabled = true; //disable cell buttons on win
+                }
+                
                 boardDiv.appendChild(cellButton);
             })
-        }));
+        });
     }
 
     function startGame(){
@@ -188,7 +209,9 @@ function ScreenController(){
     }
 
     function restartGame(){
-        game = GameController(playerOneInput.value, playerTwoInput.value);
+        const player1 = playerOneInput.value || "Player 1";
+        const player2 = playerTwoInput.value || "Player 2";
+        game = GameController(player1, player2);
         UpdateScreen();
     }
 
