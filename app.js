@@ -106,11 +106,10 @@ function GameController(PlayerOneName, PlayerTwoName){
     //Initial Round message
     printNewRound();
     
-    return {playRound, getActivePlayer};
+    return {playRound, getActivePlayer, getBoard: boardFactory.getBoard};
 }
 
 function CheckWinner(board){
-
     const winConditions = [
         //horizontal
         [board[0][0], board[0][1], board[0][2]],
@@ -133,6 +132,70 @@ function CheckWinner(board){
     return false;
 }
 
+function ScreenController(){
+    const playerOneInput = document.getElementById("player1");
+    const playerTwoInput = document.getElementById("player2");
+    const startButton = document.querySelector("#startGame");
+    const restartButton = document.querySelector("#restartGame");
+    const playerDiv = document.querySelector(".turn");
+    const boardDiv = document.querySelector(".board");
+    const messageDiv = document.querySelector(".message");
+
+    let game;
+    
+    function UpdateScreen(){
+        if (!game){{
+            return;
+        }}
+        //clear board
+        boardDiv.textContent = "";
+
+        const screenBoard = game.getBoard();
+        console.log("Board data: ", screenBoard);
+
+        const activePlayer = game.getActivePlayer();
+        //player's turn display
+        playerDiv.textContent = `${activePlayer.name}'s turn...`;
 
 
-const game = GameController("Alice", "Bill");
+        //board cells creation
+        screenBoard.forEach(row, rowIndex => {
+            row.forEach((cell, colIndex) => {
+                const cellButton = document.createElement("button");
+                cellButton.classList.add("cell");//for styling
+                cellButton.textContent = cell.getValue();
+
+                //save cell position
+                cellButton.dataset.row = rowIndex;
+                cellButton.dataset.col = colIndex;
+
+                //click event listener
+                cellButton.addEventListener("click", () => {
+                    game.playRound(rowIndex, colIndex);
+                    UpdateScreen();
+                });
+                boardDiv.appendChild(cellButton);
+            })
+        });
+    }
+
+    function startGame(){
+        const player1 = playerOneInput.value || "Player 1";
+        const player2 = playerTwoInput.value || "Player 2";
+        game = GameController(player1, player2);
+        console.log(game);
+        UpdateScreen();
+    }
+
+    function restartGame(){
+        game = GameController(playerOneInput.value, playerTwoInput.value);
+        UpdateScreen();
+    }
+
+    startButton.addEventListener("click", startGame);
+    restartButton.addEventListener("click", restartGame);
+
+    return {UpdateScreen};
+}
+
+ScreenController();

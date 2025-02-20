@@ -8,12 +8,20 @@
     <script src="app.js" defer></script>
 </head>
 <body>
-    <h1>Hello there!</h1>
-    <p>Welcome to TicTacToe!</p>
-    <div class="container">
-        <h1 class="turn"></h1>
-        <div class="board"></div>
+    <h1>Welcome to TicTacToe!</h1>
+
+    <!-- Περιοχή για εισαγωγή παικτών -->
+    <div class="player-setup">
+        <input type="text" id="player1" placeholder="Player 1 Name">
+        <input type="text" id="player2" placeholder="Player 2 Name">
+        <button id="startGame">Start Game</button>
     </div>
 
+    <div class="container">
+        <h2 class="turn"></h2>  <!-- Εμφάνιση του ποιος παίζει -->
+        <div class="board"></div>  <!-- Το ταμπλό του παιχνιδιού -->
+        <p class="message"></p>  <!-- Μηνύματα Νίκης/Ισοπαλίας -->
+        <button id="restartGame">Restart Game</button>  <!-- Κουμπί Επανεκκίνησης -->
+    </div>
 </body>
 </html>
