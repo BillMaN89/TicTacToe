@@ -159,7 +159,7 @@ function ScreenController(){
 
 
         //board cells creation
-        screenBoard.forEach(row, rowIndex => {
+        screenBoard.forEach((row, rowIndex => {
             row.forEach((cell, colIndex) => {
                 const cellButton = document.createElement("button");
                 cellButton.classList.add("cell");//for styling
@@ -176,7 +176,7 @@ function ScreenController(){
                 });
                 boardDiv.appendChild(cellButton);
             })
-        });
+        }));
     }
 
     function startGame(){
